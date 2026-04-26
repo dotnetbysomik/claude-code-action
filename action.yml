@@ -151,6 +151,17 @@ inputs:
     required: false
     default: ""
 
+  # Proxy configuration
+  anthropic_base_url:
+    description: 'Custom Anthropic API base URL (e.g., for proxy)'
+    required: false
+    default: ''
+
+  anthropic_auth_token:
+    description: 'Auth token for custom base URL'
+    required: false
+    default: ''
+
 outputs:
   execution_file:
     description: "Path to the Claude Code execution output file"
@@ -294,7 +305,8 @@ runs:
         # Provider configuration
         ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key }}
         CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude_code_oauth_token }}
-        ANTHROPIC_BASE_URL: ${{ env.ANTHROPIC_BASE_URL }}
+        ANTHROPIC_BASE_URL: ${{ inputs.anthropic_base_url }}
+        ANTHROPIC_AUTH_TOKEN: ${{ inputs.anthropic_auth_token }}
         ANTHROPIC_CUSTOM_HEADERS: ${{ env.ANTHROPIC_CUSTOM_HEADERS }}
         CLAUDE_CODE_USE_BEDROCK: ${{ inputs.use_bedrock == 'true' && '1' || '' }}
         CLAUDE_CODE_USE_VERTEX: ${{ inputs.use_vertex == 'true' && '1' || '' }}
