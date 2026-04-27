@@ -44,16 +44,6 @@ export function checkContainsTrigger(context: ParsedGitHubContext): boolean {
     }
   }
 
-  // Check for label trigger on pull requests
-  if (isPullRequestEvent(context) && context.eventAction === "labeled") {
-    const labelName = (context.payload as any).label?.name || "";
-
-    if (labelTrigger && labelName === labelTrigger) {
-      console.log(`Pull request labeled with trigger label '${labelTrigger}'`);
-      return true;
-    }
-  }
-
   // Check for issue body and title trigger on issue creation
   if (isIssuesEvent(context) && context.eventAction === "opened") {
     const issueBody = context.payload.issue.body || "";
