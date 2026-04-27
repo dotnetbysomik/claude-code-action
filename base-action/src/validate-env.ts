@@ -8,6 +8,8 @@ export function validateEnvironmentVariables() {
   const useFoundry = process.env.CLAUDE_CODE_USE_FOUNDRY === "1";
   const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
   const claudeCodeOAuthToken = process.env.CLAUDE_CODE_OAUTH_TOKEN;
+  const anthropicBaseUrl = process.env.ANTHROPIC_BASE_URL;
+  const anthropicAuthToken = process.env.ANTHROPIC_AUTH_TOKEN;
 
   const errors: string[] = [];
 
@@ -20,7 +22,9 @@ export function validateEnvironmentVariables() {
   }
 
   if (!useBedrock && !useVertex && !useFoundry) {
-    if (!anthropicApiKey && !claudeCodeOAuthToken) {
+    // Skip API key check when using a custom proxy (base URL + auth token provided)
+    const usingProxy = !!anthropicBaseUrl && !!anthropicAuthToken;
+    if (!anthropicApiKey && !claudeCodeOAuthToken && !usingProxy) {
       errors.push(
         "Either ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN is required when using direct Anthropic API.",
       );
